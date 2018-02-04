@@ -32,7 +32,7 @@ class WordCount {
 //       //System.out.println(word+" "+cnt);
 //       i++;
 //     }
-//2. Iterator
+//2. Iterator and Map.Entry
 //     Iterator it = wordsCountMap.entrySet().iterator();
 //     while(it.hasNext()){
 //       Map.Entry<String,Integer> pair = (Map.Entry<String,Integer>) it.next();
@@ -42,7 +42,7 @@ class WordCount {
 //       op[i] = newWord;
 //       i++;     
 //      }
-//3. Using Map.Entry --> the best approach.
+//3. Using Map.Entry --> the best and easy approach.
     for(Map.Entry<String, Integer> entry: wordsCountMap.entrySet()){
       String[] newWord = {entry.getKey(), entry.getValue().toString()};
       op[i] = newWord;
