@@ -1,0 +1,64 @@
+/*
+Find number of brackets needed to match all (or complete all brackets)
+Ex: 
+1. ip = "()()"
+   op = 0
+2. ip = "()("
+   op = 1
+3. ip = "()()))"
+   op = 2
+4. ip = ")()()"
+   op = 1
+*/
+import java.io.*;
+import java.util.*;
+
+class BracketMatchProb {
+  
+  static int bracketMatch(String text) {
+
+    int openNeeded = 0;
+    int closeNeeded = 0;
+    for(int i = 0; i< text.length(); i++){
+      
+      Character c = text.charAt(i);
+      if(c.equals('(')){
+        closeNeeded++;
+      }else{
+        if(closeNeeded >0){
+          closeNeeded--;
+        }else{
+          openNeeded++;
+        }
+      }
+    }
+    return openNeeded+closeNeeded;
+  }
+  
+  static int bracketMatchUsingStack(String text){
+    int openNeeded = 0;
+    Stack<Character> charStack = new Stack<>();
+    for(int i = 0; i< text.length(); i++){
+      Character c = text.charAt(i);
+      if(c.equals('(')){
+        charStack.push('(');
+      }else{
+        if(!charStack.empty()){
+          charStack.pop();
+        }else{
+          openNeeded++;
+        }
+      }
+    }
+    return openNeeded + charStack.size();
+  }
+
+  public static void main(String[] args) {
+
+    System.out.println(bracketMatch("())()(()())"));
+    
+    System.out.println(bracketMatchUsingStack("())())))(()())"));
+    //()()())))
+  }
+
+}
