@@ -1,4 +1,9 @@
-class Solution {
+// package whatever; // don't place package name!
+
+import java.io.*;
+import java.util.*;
+
+class AllSubsetsOfIntArray {
     public List<List<Integer>> subsets(int[] nums) {
         List<Integer> intList = new ArrayList<>();
         for(int i = 0; i < nums.length; i++){
@@ -20,19 +25,19 @@ class Solution {
                 newNumsList.add(nums.get(i));
             }
             List<List<Integer>> recvdIntsList = subSetRecursive(newNumsList);
-            List<List<Integer>> finalIntsList = new ArrayList<>();
+            List<List<Integer>> finalIntsList = new ArrayList<>(recvdIntsList);
             for(int i =0; i< recvdIntsList.size(); i++){
-                List<Integer> currNumsList = recvdIntsList.get(i);
+                List<Integer> currNumsList = new ArrayList<>(recvdIntsList.get(i));
                 currNumsList.add(numHere);
-                recvdIntsList.add(currNumsList);
+                finalIntsList.add(currNumsList);
             }
-            return recvdIntsList;
+            return finalIntsList;
         }
     }
     
     public static void main(String[] args){
         int[] nums = new int[]{1,2,3};
-        Solution sol = new Solution();
+        AllSubsetsOfIntArray sol = new AllSubsetsOfIntArray();
         List<List<Integer>> result = sol.subsets(nums);
         System.out.println(result);
     }
