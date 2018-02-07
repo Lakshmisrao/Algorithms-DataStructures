@@ -1,0 +1,65 @@
+/*
+The deletion distance of two strings is the minimum number of characters you need to delete in the two strings 
+in order to get the same string. For instance, the deletion distance between "heat" and "hit" is 3:
+
+By deleting 'e' and 'a' in "heat", and 'i' in "hit", we get the string "ht" in both cases.
+We cannot get the same string from both strings by deleting 2 letters or fewer.
+Given the strings str1 and str2, write an efficient function deletionDistance that returns the deletion distance between them. 
+Explain how your function works, and analyze its time and space complexities.
+input:  str1 = "dog", str2 = "frog"
+output: 3
+
+input:  str1 = "some", str2 = "some"
+output: 0
+
+input:  str1 = "some", str2 = "thing"
+output: 9
+
+input:  str1 = "", str2 = ""
+output: 0
+
+input: str1 = "hello", str2 = "eohll"
+output: 4
+*/
+
+import java.io.*;
+import java.util.*;
+
+class DeletionDistanceProblem {
+
+  static int deletionDistance(String str1, String str2) {
+    if(str1 == null || str2 == null){
+      return -1;
+    }
+    if(str1.isEmpty() && str2.isEmpty() || str1.equals(str2)){
+      return 0;
+    }
+    
+    int lcsLen = findLongestCommonSubsequence(str1, str2,str1.length(), str2.length() );
+    return (str1.length() +str2.length() - (2*lcsLen));
+  }
+  
+  
+   static  int findLongestCommonSubsequence(String str1,String str2, int m, int n){
+    if(m ==0 || n== 0){
+      return 0;
+    }else{
+      Character c1 = str1.charAt(m-1);
+      Character c2 = str2.charAt(n-1);
+      if(c1.equals(c2)){
+        return 1+ findLongestCommonSubsequence(str1,str2, m-1, n-1);
+      }else{
+        return Math.max((findLongestCommonSubsequence(str1,str2, m, n-1)),(findLongestCommonSubsequence(str1,str2, m-1, n)));
+      }
+    }
+  }
+  
+   
+
+  public static void main(String[] args) {
+
+    System.out.println(DeletionDistanceProblem.deletionDistance("hello", "eohll"));
+    /*Expected output = 4*/
+  }
+
+}
