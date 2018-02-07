@@ -1,0 +1,145 @@
+/*
+Sales Path
+The car manufacturer Honda holds their distribution system in the form of a tree (not necessarily binary). 
+The root is the company itself, and every node in the tree represents a car distributor that receives cars 
+from the parent node and ships them to its children nodes. 
+The leaf nodes are car dealerships that sell cars direct to consumers. 
+In addition, every node holds an integer that is the cost of shipping a car to it.
+
+           0
+     /     |      \
+    5      3       6
+   /      / \     / \
+  4      2   0    1  5
+        /
+        1
+       /
+      1
+
+A path from Honda’s factory to a car dealership, which is a path from the root to a leaf in the tree, is called a Sales Path. 
+The cost of a Sales Path is the sum of the costs for every node in the path. 
+For example, in the tree above one Sales Path is 0→3→0→10, and its cost is 13 (0+3+0+10).
+
+Honda wishes to find the minimal Sales Path cost in its distribution tree. 
+Given a node rootNode, write an function getCheapestCost that calculates the minimal Sales Path cost in the tree.
+
+Implement your function in the most efficient manner and analyze its time and space complexities.
+
+For example:
+
+Given the rootNode of the tree in diagram above
+
+Your function would return:
+
+7 since it’s the minimal Sales Path cost (there are actually two Sales Paths in the tree whose cost is 7: 0→6→1 and 0→3→2→1→1)
+
+Constraints:
+
+[time limit] 5000ms
+
+[input] Node rootNode
+
+0 ≤ rootNode.cost ≤ 100000
+[output] integer
+*/
+
+
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+ 
+  static class Node {
+      
+    int cost;
+    Node[] children;
+    Node parent;
+
+    Node(int cost) {
+      this.cost = cost;
+      children = null;
+      parent = null;
+    }
+  }
+
+  static class SalesPath {
+    
+   
+    static int getCheapestCost(Node rootNode) {
+      //
+      if(rootNode.children == null || rootNode.children.length == 0){
+        return rootNode.cost;
+      }else{
+        int least = Integer.MAX_VALUE;
+        for(int i =0; i< rootNode.children.length; i++){
+          int cnt = getCheapestCost(rootNode.children[i]);
+          if(cnt<least){
+            least = cnt;
+          }
+        }
+        return least+rootNode.cost;
+      }
+    }
+  }
+  
+    
+  /*********************************************
+   * Driver program to test above method     *
+   *********************************************/
+  
+  public Solution.Node driver(List<Integer> childNodeVals, Solution.Node root){
+    Solution.Node[] children = new Solution.Node[childNodeVals.size()];
+    for(int i =0; i< children.length ; i++){
+      Solution.Node newChild = new Solution.Node(childNodeVals.get(i));
+      newChild.parent = root;
+      children[i] = newChild;
+    }
+    root.children = children;
+    return root;
+  }
+
+  public static void main(String[] args) {
+    
+    List<List<Integer>> nodeVals = new ArrayList<>();
+    
+    List<Integer> cNodes1 = new ArrayList<>();
+    cNodes1.add(0);
+    List<Integer> cNodes2 = new ArrayList<>();
+    cNodes2.add(5);
+    cNodes2.add(3);
+    cNodes2.add(6);
+    List<Integer> cNodes3 = new ArrayList<>();
+    cNodes3.add(4);
+    List<Integer> cNodes4 = new ArrayList<>();
+    cNodes4.add(2);
+    cNodes4.add(0);
+    List<Integer> cNodes5 = new ArrayList<>();
+    cNodes5.add(1);
+    cNodes5.add(5);    
+    List<Integer> cNodes6 = new ArrayList<>();
+    cNodes6.add(1);
+    List<Integer> cNodes7 = new ArrayList<>();
+    cNodes7.add(10);
+    List<Integer> cNodes8 = new ArrayList<>();
+    cNodes8.add(1);
+
+
+    
+    Solution.Node root = new Solution.Node(0);
+    Solution sol = new Solution();
+    root = sol.driver(cNodes2, root);
+    
+    root.children[0] = sol.driver(cNodes3, root.children[0]);
+    root.children[1] = sol.driver(cNodes4, root.children[1]);
+    root.children[2] = sol.driver(cNodes5, root.children[2]);
+    
+    root.children[1].children[0] = sol.driver(cNodes6, root.children[1].children[0]);
+    root.children[1].children[1] = sol.driver(cNodes7, root.children[1].children[1]);
+    root.children[1].children[0].children[0] = sol.driver(cNodes8, root.children[1].children[0].children[0]);
+
+    
+    int result = Solution.SalesPath.getCheapestCost(root);
+    
+    System.out.println("Minimal Sales Path cost = "+result);
+  }
+}
