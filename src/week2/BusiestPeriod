@@ -1,0 +1,52 @@
+import java.io.*;
+import java.util.*;
+
+class Solution {
+	
+  static int findBusiestPeriod(int[][] data) {
+
+    if(data == null || data.length == 0){
+      return 0;
+    }
+    
+    int maxPeople = -1, maxTimeStamp = -1;
+    int currPplCnt = 0, currTimeStamp = data[0][0]; 
+    for(int i =0; i< data.length; i++){
+      int[] currData = data[i];
+      
+      if(currData[0] != currTimeStamp){
+        if(currPplCnt > maxPeople){
+          maxPeople = currPplCnt;
+          maxTimeStamp = currTimeStamp;
+        }
+        currTimeStamp = currData[0];
+      }
+      
+      if(currData[2] == 0){
+        currPplCnt -= currData[1];
+      }else if (currData[2] == 1){
+        currPplCnt += currData[1];
+      }
+      
+      if(i == data.length-1){
+        if(currPplCnt > maxPeople){
+          maxPeople = currPplCnt;
+          maxTimeStamp = currTimeStamp;
+        }
+        currTimeStamp = currData[0];
+        
+      }
+
+    }
+    
+    if(maxTimeStamp == -1){
+      return currTimeStamp;
+    }
+    return maxTimeStamp;
+  }
+
+  public static void main(String[] args) {
+
+  }
+
+}
