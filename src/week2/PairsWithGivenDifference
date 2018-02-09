@@ -1,0 +1,74 @@
+/*
+Pairs with Specific Difference
+Given an array arr of distinct integers and a nonnegative integer k, write a function findPairsWithGivenDifference that returns an array of all pairs [x,y] in arr, such that x - y = k. If no such pairs exist, return an empty array.
+
+In your solution, try to reduce the memory usage while maintaining time efficiency. Prove the correctness of your solution and analyze its time and space complexities.
+
+Note: the order of the pairs in the output array doesn’t matter.
+
+Examples:
+input:  arr = [0, -1, -2, 2, 1], k = 1
+output: [[0, -1], [-1, -2], [2, 1], [1, 0]]
+
+input:  arr = [1, 7, 5, 3, 32, 17, 12], k = 17
+output: []
+
+Constraints:
+
+[time limit] 5000ms
+
+[input] array.integer arr
+
+0 ≤ arr.length ≤ 100
+[input]integer k
+
+k ≥ 0
+[output] array.array.integer
+
+*/
+
+
+import java.io.*;
+import java.util.*;
+
+class Solution {
+
+  static int[][] findPairsWithGivenDifference(int[] arr, int k) {
+
+    List<List<Integer>> result = new ArrayList<>();
+    Arrays.sort(arr);
+
+    for(int i = 0, j = 1; j < arr.length;j++){
+      if(arr[i]+k == arr[j]){
+        List<Integer> pair = new ArrayList<Integer>();
+        pair.add(arr[j]);
+        pair.add(arr[i]);
+        result.add(pair);
+        i++;
+        
+      }
+      
+      else if(arr[i]+k < arr[j]) {
+        i++;
+        j--;
+      }
+    }
+    
+    int[][] op=new int[result.size()][];
+    
+    for (int i = 0; i < result.size(); i++) {
+      op[i] = new int[]{result.get(i).get(0), result.get(i).get(1)};
+    }
+    return op;
+      
+  }
+
+  public static void main(String[] args) {
+
+    int[][] result = findPairsWithGivenDifference((new int[]{1, 7, 5, 3}), 17);
+    System.out.println();
+    for(int i = 0; i< result.length; i++){
+      System.out.println("("+result[i][0]+ ", "+result[i][1]+")");
+    }
+  }
+}
